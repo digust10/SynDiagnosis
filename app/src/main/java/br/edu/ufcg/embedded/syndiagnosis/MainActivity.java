@@ -1,17 +1,26 @@
 package br.edu.ufcg.embedded.syndiagnosis;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ((Button) findViewById(R.id.button)).setOnClickListener(onClick);
+        ((Button) findViewById(R.id.button2)).setOnClickListener(onClick);
+        ((Button) findViewById(R.id.button3)).setOnClickListener(onClick);
+        ((Button) findViewById(R.id.button4)).setOnClickListener(onClick);
+        ((Button) findViewById(R.id.button5)).setOnClickListener(onClick);
     }
 
 
@@ -36,4 +45,26 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private View.OnClickListener onClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent it = null;
+            switch (v.getId()) {
+                case R.id.button:
+                    break;
+                case R.id.button2:
+                    break;
+                case R.id.button3:
+                    break;
+                case R.id.button4:
+                    break;
+                case R.id.button5:
+                    it = new Intent(getApplicationContext(), FacialRecognizingActivity.class);
+                    break;
+            }
+            if (it != null)
+                startActivity(it);
+        }
+    };
 }
