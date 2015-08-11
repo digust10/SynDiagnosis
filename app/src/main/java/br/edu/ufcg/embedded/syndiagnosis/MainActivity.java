@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.button3:
                     break;
                 case R.id.button4:
+                    it = new Intent(getApplicationContext(), CadastroMedicoActivity.class);
                     break;
                 case R.id.button5:
                     it = new Intent(getApplicationContext(), FacialRecognizingActivity.class);
