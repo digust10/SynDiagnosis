@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/edt_name"
             android:hint="Name" />
 
         <EditText
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/editText2"
+            android:id="@+id/edt_email"
             android:hint="E-mail" />
 
         <EditText
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/editText3"
+            android:id="@+id/edt_password"
             android:hint="Password" />
 
         <EditText
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText4"
+            android:id="@+id/edt_crm"
             android:hint="CRM" />
 
         <EditText
@@ -51,15 +51,23 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText5"
+            android:id="@+id/edt_cpf"
             android:hint="CPF" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OK"
-            android:id="@+id/button9"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/btn_ok"
+            android:layout_gravity="center_horizontal"
+            android:onClick="Salvar"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/btn_cancel"
+            android:layout_gravity="center_horizontal"
+            android:onClick="Cancel"/>
     </LinearLayout>
 
     <TextView

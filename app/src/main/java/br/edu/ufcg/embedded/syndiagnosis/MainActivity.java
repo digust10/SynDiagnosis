@@ -8,9 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.parse.Parse;
-import com.parse.ParseObject;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.button3)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button4)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button5)).setOnClickListener(onClick);
+        ((Button) findViewById(R.id.button6)).setOnClickListener(onClick);
     }
 
 
@@ -66,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.button5:
                     it = new Intent(getApplicationContext(), FacialRecognizingActivity.class);
+                    break;
+                case R.id.button6:
+                    it = new Intent(getApplicationContext(), MedicosCadastradosActivity.class);
                     break;
             }
             if (it != null)

@@ -1,63 +1,82 @@
 package br.edu.ufcg.embedded.syndiagnosis;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import br.edu.ufcg.embedded.syndiagnosis.DAO.medicosDAO;
+import br.edu.ufcg.embedded.syndiagnosis.Model.Medico;
+
 public class CadastroMedicoActivity extends AppCompatActivity {
 
-    private EditText name;
-    private EditText email;
-    private EditText password;
-    private EditText crm;
-    private EditText cpf;
-    private Button cadastrar;
+    private Medico medico;
+    private EditText edtName;
+    private EditText edtCpf;
+    private EditText edtCrm;
+    private EditText edtEmail;
+    private EditText edtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_medico);
 
+        edtName = (EditText) findViewById(R.id.edt_name);
+        edtCpf = (EditText) findViewById(R.id.edt_cpf);
+        edtCrm = (EditText) findViewById(R.id.edt_crm);
+        edtEmail = (EditText) findViewById(R.id.edt_email);
+        edtPassword = (EditText) findViewById(R.id.edt_password);
+
+        // Instancia um novo objeto do tipo Medico
+        medico = new Medico();
+
         //Iniciando o Parse
         Parse.enableLocalDatastore(this);
         //ParseObject.registerSubclass(TestObject.class);
         Parse.initialize(this, "N4FsbD6GDmLtxg9WKbTWIOxcKCFmzvN60FCHJQl4", "p2VfHwjS5T5lFk3hbT15IoQnSs4lyafNdkziOmIH");
-
-
-
-        name = (EditText) findViewById(R.id.editText);
-        email = (EditText) findViewById(R.id.editText2);
-        password = (EditText) findViewById(R.id.editText3);
-        crm = (EditText) findViewById(R.id.editText4);
-        cpf = (EditText) findViewById(R.id.editText5);
-        cadastrar = (Button) findViewById(R.id.button9);
-        //cadastrar.setOnClickListener((View.OnClickListener) this);
-
-        cadastrar.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Intent it = null;
-                //TODO: salvar dados no BD
-                //testando o parse
-                ParseObject testObject = new ParseObject("TestObject");
-                testObject.put("Nome", name.getText().toString());
-                testObject.put("Email", email.getText().toString());
-                testObject.put("Status", false); //o usuario nao esta autorizado por padrao
-                testObject.saveInBackground();
-                Toast.makeText(getApplicationContext(), "Requiscao enviada", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
     }
+
+    public void Salvar(View view){
+        // Injeta no objeto "objetoEmprestado" os dados informados pelo usuário
+        medico.setName(edtName.getText().toString());
+        medico.setCpf(edtCpf.getText().toString());
+        medico.setCrm(edtCrm.getText().toString());
+        medico.setEmail(edtEmail.getText().toString());
+        medico.setPassword(edtPassword.getText().toString());
+
+        // Instancia o DAO para persistir o objeto
+        medicosDAO dao = new medicosDAO(getApplicationContext());
+        // Salva o objeto no banco de dados
+        dao.adiciona(medico);
+        // Mostra para o usuário uma mensagem de sucesso na operação
+        Toast.makeText(getApplicationContext(), "Objeto salvo com sucesso!", Toast.LENGTH_LONG)
+                .show();
+
+        Intent it = null;
+        //TODO: salvar dados no BD
+        //testando o parse
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("Nome", edtName.getText().toString());
+        testObject.put("Email", edtEmail.getText().toString());
+        testObject.put("Status", false); //o usuario nao esta autorizado por padrao
+        testObject.saveInBackground();
+        Toast.makeText(getApplicationContext(), "Requiscao enviada", Toast.LENGTH_SHORT).show();
+        finish();
+
+    }
+
+    public void Cancel(View view){
+        finish();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -28,6 +28,11 @@
             android:name=".login"
             android:label="@string/title_activity_login" >
         </activity>
+
+        <activity
+            android:name=".MedicosCadastradosActivity"
+            android:label="@string/title_activity_medicos_cadastrados" >
+        </activity>
     </application>
 
 </manifest>

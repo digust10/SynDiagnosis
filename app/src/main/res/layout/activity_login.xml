@@ -54,7 +54,7 @@
             android:orientation="horizontal" >
 
             <Button
-
+                android:onClick="Login"
                 android:id="@+id/btnLogin"
                 style="@style/btn_white_large"
                 android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                 android:text="@string/log_in" />
 
             <Button
-
+                android:onClick="Register"
                 android:id="@+id/btnReg"
                 style="@style/btn_white_large"
                 android:layout_width="match_parent"
