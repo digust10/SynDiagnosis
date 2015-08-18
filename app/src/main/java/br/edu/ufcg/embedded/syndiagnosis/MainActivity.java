@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             Intent it = null;
             switch (v.getId()) {
                 case R.id.button:
+                    it = new Intent(getApplicationContext(), login.class);
                     break;
                 case R.id.button2:
                     break;
