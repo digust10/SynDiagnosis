@@ -8,6 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.parse.Parse;
+import com.parse.ParseObject;
 
 public class CadastroMedicoActivity extends AppCompatActivity {
 
@@ -23,6 +27,13 @@ public class CadastroMedicoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_medico);
 
+        //Iniciando o Parse
+        Parse.enableLocalDatastore(this);
+        //ParseObject.registerSubclass(TestObject.class);
+        Parse.initialize(this, "N4FsbD6GDmLtxg9WKbTWIOxcKCFmzvN60FCHJQl4", "p2VfHwjS5T5lFk3hbT15IoQnSs4lyafNdkziOmIH");
+
+
+
         name = (EditText) findViewById(R.id.editText);
         email = (EditText) findViewById(R.id.editText2);
         password = (EditText) findViewById(R.id.editText3);
@@ -36,6 +47,14 @@ public class CadastroMedicoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent it = null;
                 //TODO: salvar dados no BD
+                //testando o parse
+                ParseObject testObject = new ParseObject("TestObject");
+                testObject.put("Nome", name.getText().toString());
+                testObject.put("Email", email.getText().toString());
+                testObject.put("Status", false); //o usuario nao esta autorizado por padrao
+                testObject.saveInBackground();
+                Toast.makeText(getApplicationContext(), "Requiscao enviada", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -43,7 +62,7 @@ public class CadastroMedicoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_cadastro_medico, menu);
+        //getMenuInflater().inflate(R.menu.menu_cadastro_medico, menu);
         return true;
     }
 
