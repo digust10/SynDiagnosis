@@ -8,12 +8,12 @@ import com.parse.ParseObject;
  */
 @ParseClassName("TestObject")
 public class TestObject extends ParseObject {
-    public String getName(){
-        return getString("Name");
+    public String getNome(){
+        return getString("Nome");
     }
 
-    public void setName(String name){
-        put("Name", name);
+    public void setNome(String name){
+        put("Nome", name);
     }
 
     public String getEmail(){
@@ -34,6 +34,6 @@ public class TestObject extends ParseObject {
 
     @Override
     public String toString(){
-        return getName() + "\n" + getEmail();
+        return getNome() + "\n" + getEmail();
     }
 }

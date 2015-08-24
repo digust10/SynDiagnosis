@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,12 +19,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //iniciando o Parse
+        ParseObject.registerSubclass(TestObject.class);
+        Parse.initialize(this, "N4FsbD6GDmLtxg9WKbTWIOxcKCFmzvN60FCHJQl4", "p2VfHwjS5T5lFk3hbT15IoQnSs4lyafNdkziOmIH");
+
         ((Button) findViewById(R.id.button)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button2)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button3)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button4)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button5)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button6)).setOnClickListener(onClick);
+        ((Button) findViewById(R.id.button7)).setOnClickListener(onClick);
     }
 
 
@@ -67,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.button6:
                     it = new Intent(getApplicationContext(), MedicosCadastradosActivity.class);
+                    break;
+                case R.id.button7:
+                    it = new Intent(getApplicationContext(), ParseListActivity.class);
                     break;
             }
             if (it != null)

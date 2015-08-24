@@ -37,11 +37,8 @@ public class CadastroMedicoActivity extends AppCompatActivity {
 
         // Instancia um novo objeto do tipo Medico
         medico = new Medico();
+        //Parse inicializado no main
 
-        //Iniciando o Parse
-        Parse.enableLocalDatastore(this);
-        //ParseObject.registerSubclass(TestObject.class);
-        Parse.initialize(this, "N4FsbD6GDmLtxg9WKbTWIOxcKCFmzvN60FCHJQl4", "p2VfHwjS5T5lFk3hbT15IoQnSs4lyafNdkziOmIH");
     }
 
     public void Salvar(View view){
@@ -63,7 +60,7 @@ public class CadastroMedicoActivity extends AppCompatActivity {
         Intent it = null;
         //TODO: salvar dados no BD
         //testando o parse
-        ParseObject testObject = new ParseObject("TestObject");
+        ParseObject testObject = ParseObject.create("TestObject");
         testObject.put("Nome", edtName.getText().toString());
         testObject.put("Email", edtEmail.getText().toString());
         testObject.put("Status", false); //o usuario nao esta autorizado por padrao
