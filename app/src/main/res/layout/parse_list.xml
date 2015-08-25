@@ -14,7 +14,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aceitar todas as solicitacoes"
+        android:text="Aceitar solicitacoes selecionadas"
         android:id="@+id/buttonAceitar"
         android:layout_gravity="center_horizontal" />
 

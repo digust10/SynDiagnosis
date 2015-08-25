@@ -17,6 +17,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ufcg.embedded.syndiagnosis.Adapters.ParseListAdapter;
+
 /**
  * Created by digust10 on 18/08/2015.
  */
@@ -52,17 +54,41 @@ public class ParseListActivity extends ListActivity {
 
                     }
                 }
-                ArrayAdapter<TestObject> adapter = new ArrayAdapter<TestObject>(ParseListActivity.this, android.R.layout.simple_list_item_1, usuarios);//simple_list_item_multiple_choice
+                ArrayAdapter<TestObject> adapter = new ParseListAdapter(ParseListActivity.this, R.layout.item_parse_list, usuarios);//simple_list_item_multiple_choice
                 setListAdapter(adapter);
             }
         });
     }
 
     private void aceitarTodos(){
+
         /*for(TestObject aceitaveis : usuarios){
-            aceitaveis.setStatus(true);
+
+            //aceitaveis.setStatus(true);
+            aceitaveis.saveInBackground();
         }*/
         Log.d("Entrou", "modificacoa");
+        ParseQuery<TestObject> query = new ParseQuery<TestObject>("TestObject");
+        query.findInBackground(new FindCallback<TestObject>() {
+            @Override
+            public void done(List<TestObject> usr, ParseException e) {
+                if(e != null){
+                    //Erro
+                }else{
+                    for(TestObject objUser : usr){
+                        for (TestObject usuario : usuarios){
+                            if(objUser.compareTo(usuario) == 1){
+                                objUser.setStatus(usuario.getStatus());
+                                objUser.saveInBackground();
+                                Log.d("Entrou", String.valueOf(objUser.getStatus()));
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        /*Log.d("Entrou", "modificacoa");
         ParseQuery<TestObject> query = new ParseQuery<TestObject>("TestObject");
         query.findInBackground(new FindCallback<TestObject>() {
             @Override
@@ -80,7 +106,7 @@ public class ParseListActivity extends ListActivity {
                     }
                 }
             }
-        });
+        });*/
     }
 
 
@@ -91,7 +117,8 @@ public class ParseListActivity extends ListActivity {
             switch (v.getId()) {
                 case R.id.buttonAceitar:
                     aceitarTodos();
-                    it = new Intent(getApplicationContext(), login.class);
+                    //it = new Intent(getApplicationContext(), MainActivity.class);
+                    finish();
                     Toast.makeText(getApplicationContext(), "Todos os usuarios foram aceitos", Toast.LENGTH_SHORT).show();
                     break;
             }

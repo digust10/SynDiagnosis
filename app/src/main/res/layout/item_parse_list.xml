@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="70dp"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.1"
+
+        android:gravity="center">
+
+        <CheckBox
+            android:id="@+id/checkboxItemParse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.9"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:id="@+id/nomeParseList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome do usuario"
+            android:textSize="22sp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/emailParseList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

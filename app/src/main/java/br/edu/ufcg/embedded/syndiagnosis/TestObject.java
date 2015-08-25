@@ -7,7 +7,7 @@ import com.parse.ParseObject;
  * Created by digust10 on 18/08/2015.
  */
 @ParseClassName("TestObject")
-public class TestObject extends ParseObject {
+public class TestObject extends ParseObject implements Comparable<TestObject>{
     public String getNome(){
         return getString("Nome");
     }
@@ -35,5 +35,15 @@ public class TestObject extends ParseObject {
     @Override
     public String toString(){
         return getNome() + "\n" + getEmail();
+    }
+
+   @Override
+    public int compareTo(TestObject testObject) {
+        if(testObject.getEmail().equals(this.getEmail())){
+            if(testObject.getNome().equals(this.getNome())){
+                return 1;
+            }
+        }
+        return -1;
     }
 }
