@@ -1,5 +1,6 @@
 package br.edu.ufcg.embedded.syndiagnosis;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -11,6 +12,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ufcg.embedded.syndiagnosis.DAO.medicosDAO;
@@ -21,6 +27,7 @@ public class login extends ActionBarActivity {
 
     private EditText edtUsername;
     private EditText edtPassword;
+    private List<TestObject> usuariosAprovadosNome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,9 @@ public class login extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        usuariosAprovadosNome = new ArrayList<TestObject>();
+        aprovadosLista((ArrayList<TestObject>) usuariosAprovadosNome);
+
         edtUsername = (EditText) findViewById(R.id.user);
         edtPassword = (EditText) findViewById(R.id.pwd);
 
@@ -37,7 +47,6 @@ public class login extends ActionBarActivity {
         medicosDAO dao = new medicosDAO(getApplicationContext());
         // Guarda os objetos consultados em uma List
         final List<Medico> medicosCadastrados = dao.listaTodos();
-
 
     }
 
@@ -52,6 +61,35 @@ public class login extends ActionBarActivity {
         return isCadastrado;
     }
 
+    //deveria ser um id unico. Tipo Email,
+    private void aprovadosLista(final ArrayList<TestObject> adicionar){
+        //Log.d("Entrou","entrou");
+        ParseQuery<TestObject> query = new ParseQuery<TestObject>("TestObject");
+        query.findInBackground(new FindCallback<TestObject>() {
+
+            @Override
+            public void done(List<TestObject> list, ParseException e) {
+                for (TestObject objUser : list) {
+                    //Log.d("Entrou", objUser.getNome());
+                    if (objUser.getStatus())
+                        adicionar.add(objUser);
+                }
+            }
+        });
+    }
+
+    //deveria ser um id unico. Tipo Email,
+    private boolean estaAprovado(final String userName){
+
+        for (TestObject objUser : usuariosAprovadosNome) {
+
+            if (objUser.getNome().equals(userName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void Login(View view){
         // Consulta os objetos cadastrados no banco de dados através do DAO
         medicosDAO dao = new medicosDAO(getApplicationContext());
@@ -59,17 +97,24 @@ public class login extends ActionBarActivity {
         final List<Medico> medicosCadastrados = dao.listaTodos();
 
         Log.i("Username", edtUsername.getText().toString());
-        Log.i("Username",edtPassword.getText().toString());
+        Log.i("Username", edtPassword.getText().toString());
 
 
-        if (isCadastrado(edtUsername.getText().toString(),edtPassword.getText().toString(),medicosCadastrados)){
-            Log.i("Username",edtUsername.getText().toString());
-            Intent intent = new Intent(this,MedicosCadastradosActivity.class);
-            startActivity(intent);
+        if(isCadastrado(edtUsername.getText().toString(), edtPassword.getText().toString(), medicosCadastrados)){
+            //Log.d("Entrou", String.valueOf(estaAprovado(edtUsername.getText().toString())));
+            if (estaAprovado(edtUsername.getText().toString())) {
+                Log.i("Username",edtUsername.getText().toString());
+                Intent intent = new Intent(this,MedicosCadastradosActivity.class);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getApplicationContext(), "Seu Cadastro ainda nao foi aprovado", Toast.LENGTH_LONG)
+                        .show();
+            }
         }else{
             Toast.makeText(getApplicationContext(), "Usuario ou senha Invalidos", Toast.LENGTH_LONG)
                     .show();
         }
+
 
     }
 

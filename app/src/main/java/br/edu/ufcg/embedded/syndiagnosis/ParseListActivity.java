@@ -36,7 +36,11 @@ public class ParseListActivity extends ListActivity {
                         newUser.setEmail(objUser.getEmail());
                         newUser.setNome(objUser.getNome());
                         newUser.setStatus(objUser.getStatus());
-                        usuarios.add(newUser);
+                        //usuarios.add(newUser);
+                        //So quem esta requisitando acesso
+                        if(objUser.getStatus() == false){
+                            usuarios.add(newUser);
+                        }
                         //}
 
                     }

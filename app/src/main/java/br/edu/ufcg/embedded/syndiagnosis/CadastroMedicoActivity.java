@@ -6,11 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufcg.embedded.syndiagnosis.DAO.medicosDAO;
 import br.edu.ufcg.embedded.syndiagnosis.Model.Medico;
@@ -40,6 +47,7 @@ public class CadastroMedicoActivity extends AppCompatActivity {
         //Parse inicializado no main
 
     }
+
 
     public void Salvar(View view){
         // Injeta no objeto "objetoEmprestado" os dados informados pelo usuário
@@ -97,15 +105,5 @@ public class CadastroMedicoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    //private void getDados(){
-        //private EditText name = (EditText) findViewById(R.id.editText);
-        //private EditText email = (EditText) findViewById(R.id.editText2);
-        //private EditText password = (EditText) findViewById(R.id.editText3);
-        //private EditText crm = (EditText) findViewById(R.id.editText4);
-        //private EditText cpf = (EditText) findViewById(R.id.editText5);
-        //private Button cadastrar = (Button) findViewById(R.id.button9);
-    //}
 
 }
