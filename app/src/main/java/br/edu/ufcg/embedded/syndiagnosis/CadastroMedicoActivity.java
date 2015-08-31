@@ -6,18 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import br.edu.ufcg.embedded.syndiagnosis.DAO.medicosDAO;
 import br.edu.ufcg.embedded.syndiagnosis.Model.Medico;
@@ -26,6 +18,7 @@ import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.checaEntradaEmBra
 import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.validaCPF;
 import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.validaEmail;
 import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.validaNome;
+import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.validaTamanhoSenha;
 
 public class CadastroMedicoActivity extends AppCompatActivity {
 
@@ -90,18 +83,22 @@ public class CadastroMedicoActivity extends AppCompatActivity {
         if (validaNome(name) && !checaEntradaEmBranco(cpf) && !checaEntradaEmBranco(crm) && !checaEntradaEmBranco(email)
                 && !checaEntradaEmBranco(password)){
 
-            if (validaCPF(cpf)){
+            if (validaTamanhoSenha(password)) {
 
-                if (validaEmail(email)){
-                    ok = true;
-                }else {
-                    Toast.makeText(getApplicationContext(), "Email Invalid", Toast.LENGTH_SHORT).show();
+                if (validaCPF(cpf)) {
+
+                    if (validaEmail(email)) {
+                        ok = true;
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Email Invalid", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "CPF Invalido", Toast.LENGTH_SHORT).show();
                 }
-
             }else{
-                Toast.makeText(getApplicationContext(), "CPF Invalido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Tamanho de senha Invalido, a senha deve ter de 6 a 12 caracteres", Toast.LENGTH_SHORT).show();
             }
-
         }else {
             Toast.makeText(getApplicationContext(), "Preencha todos os campos, existe campos vazios!", Toast.LENGTH_SHORT).show();
         }

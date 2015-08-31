@@ -1,6 +1,5 @@
 package br.edu.ufcg.embedded.syndiagnosis;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -118,6 +117,13 @@ public class login extends ActionBarActivity {
 
     }
 
+    public void forgetPassword(View view) {
+        Intent intent = new Intent(this,RecuperacaoDeSenha.class);
+        startActivity(intent);
+    }
+
+
+
 
     public void Register(View view){
         Intent intent = new Intent(this,CadastroMedicoActivity.class);
@@ -146,4 +152,6 @@ public class login extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
