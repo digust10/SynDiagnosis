@@ -13,40 +13,26 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CRM"
+        android:text="Questionário"
         android:id="@+id/button2"
         android:layout_gravity="center" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CPF"
-        android:id="@+id/button3"
-        android:layout_gravity="center" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cadastro Médico"
-        android:id="@+id/button4"
-        android:layout_gravity="center" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Reconhecimento Facial"
-        android:id="@+id/button5"
+        android:id="@+id/button3"
         android:layout_gravity="center" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medicos Cadastrados"
-        android:id="@+id/button6"
+        android:id="@+id/button4"
         android:layout_gravity="center" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Admin"
-        android:id="@+id/button7"
+        android:id="@+id/button5"
         android:layout_gravity="center" />
 </LinearLayout>

@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.button3)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button4)).setOnClickListener(onClick);
         ((Button) findViewById(R.id.button5)).setOnClickListener(onClick);
-        ((Button) findViewById(R.id.button6)).setOnClickListener(onClick);
-        ((Button) findViewById(R.id.button7)).setOnClickListener(onClick);
     }
 
 
@@ -64,19 +62,15 @@ public class MainActivity extends AppCompatActivity {
                     it = new Intent(getApplicationContext(), login.class);
                     break;
                 case R.id.button2:
+                    //it = new Intent(getApplicationContext(), QuestionarioMedicoActivity.class);
                     break;
                 case R.id.button3:
-                    break;
-                case R.id.button4:
-                    it = new Intent(getApplicationContext(), CadastroMedicoActivity.class);
-                    break;
-                case R.id.button5:
                     it = new Intent(getApplicationContext(), FacialRecognizingActivity.class);
                     break;
-                case R.id.button6:
+                case R.id.button4:
                     it = new Intent(getApplicationContext(), MedicosCadastradosActivity.class);
                     break;
-                case R.id.button7:
+                case R.id.button5:
                     it = new Intent(getApplicationContext(), ParseListActivity.class);
                     break;
             }
