@@ -22,6 +22,11 @@ import java.util.List;
 import br.edu.ufcg.embedded.syndiagnosis.DAO.medicosDAO;
 import br.edu.ufcg.embedded.syndiagnosis.Model.Medico;
 
+import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.checaEntradaEmBranco;
+import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.validaCPF;
+import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.validaEmail;
+import static br.edu.ufcg.embedded.syndiagnosis.Util.Validacao.validaNome;
+
 public class CadastroMedicoActivity extends AppCompatActivity {
 
     private Medico medico;
@@ -50,32 +55,59 @@ public class CadastroMedicoActivity extends AppCompatActivity {
 
 
     public void Salvar(View view){
-        // Injeta no objeto "objetoEmprestado" os dados informados pelo usuário
-        medico.setName(edtName.getText().toString());
-        medico.setCpf(edtCpf.getText().toString());
-        medico.setCrm(edtCrm.getText().toString());
-        medico.setEmail(edtEmail.getText().toString());
-        medico.setPassword(edtPassword.getText().toString());
+        if (validaCadastroMedico(edtName.getText().toString(),edtCpf.getText().toString(),edtCrm.getText().toString(),
+                edtEmail.getText().toString(),edtPassword.getText().toString())) {
+            // Injeta no objeto "objetoEmprestado" os dados informados pelo usuário
+            medico.setName(edtName.getText().toString());
+            medico.setCpf(edtCpf.getText().toString());
+            medico.setCrm(edtCrm.getText().toString());
+            medico.setEmail(edtEmail.getText().toString());
+            medico.setPassword(edtPassword.getText().toString());
 
-        // Instancia o DAO para persistir o objeto
-        medicosDAO dao = new medicosDAO(getApplicationContext());
-        // Salva o objeto no banco de dados
-        dao.adiciona(medico);
-        // Mostra para o usuário uma mensagem de sucesso na operação
-        Toast.makeText(getApplicationContext(), "Objeto salvo com sucesso!", Toast.LENGTH_LONG)
-                .show();
+            // Instancia o DAO para persistir o objeto
+            medicosDAO dao = new medicosDAO(getApplicationContext());
+            // Salva o objeto no banco de dados
+            dao.adiciona(medico);
+            // Mostra para o usuário uma mensagem de sucesso na operação
+            Toast.makeText(getApplicationContext(), "Objeto salvo com sucesso!", Toast.LENGTH_LONG)
+                    .show();
 
-        Intent it = null;
-        //TODO: salvar dados no BD
-        //testando o parse
-        ParseObject testObject = ParseObject.create("TestObject");
-        testObject.put("Nome", edtName.getText().toString());
-        testObject.put("Email", edtEmail.getText().toString());
-        testObject.put("Status", false); //o usuario nao esta autorizado por padrao
-        testObject.saveInBackground();
-        Toast.makeText(getApplicationContext(), "Requiscao enviada", Toast.LENGTH_SHORT).show();
-        finish();
+            Intent it = null;
+            //TODO: salvar dados no BD
+            //testando o parse
+            ParseObject testObject = ParseObject.create("TestObject");
+            testObject.put("Nome", edtName.getText().toString());
+            testObject.put("Email", edtEmail.getText().toString());
+            testObject.put("Status", false); //o usuario nao esta autorizado por padrao
+            testObject.saveInBackground();
+            Toast.makeText(getApplicationContext(), "Requiscao enviada", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
 
+    private boolean validaCadastroMedico(String name, String cpf,String crm, String email, String password){
+        boolean ok = false;
+        if (validaNome(name) && !checaEntradaEmBranco(cpf) && !checaEntradaEmBranco(crm) && !checaEntradaEmBranco(email)
+                && !checaEntradaEmBranco(password)){
+
+            if (validaCPF(cpf)){
+
+                if (validaEmail(email)){
+                    ok = true;
+                }else {
+                    Toast.makeText(getApplicationContext(), "Email Invalid", Toast.LENGTH_SHORT).show();
+                }
+
+            }else{
+                Toast.makeText(getApplicationContext(), "CPF Invalido", Toast.LENGTH_SHORT).show();
+            }
+
+        }else {
+            Toast.makeText(getApplicationContext(), "Preencha todos os campos, existe campos vazios!", Toast.LENGTH_SHORT).show();
+        }
+
+
+        return ok;
     }
 
     public void Cancel(View view){
