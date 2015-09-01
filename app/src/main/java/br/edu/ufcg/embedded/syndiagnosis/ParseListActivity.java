@@ -31,6 +31,7 @@ public class ParseListActivity extends ListActivity {
         setContentView(R.layout.parse_list);
 
         ((Button) findViewById(R.id.buttonAceitar)).setOnClickListener(onClick);
+        ((Button) findViewById(R.id.buttonRejeitar)).setOnClickListener(onClick);
 
         ParseQuery<TestObject> query = new ParseQuery<TestObject>("TestObject");
         query.findInBackground(new FindCallback<TestObject>() {
@@ -109,6 +110,32 @@ public class ParseListActivity extends ListActivity {
         });*/
     }
 
+    private void rejeitarTodos(){
+
+        Log.d("Entrou", "modificacoa");
+        ParseQuery<TestObject> query = new ParseQuery<TestObject>("TestObject");
+        query.findInBackground(new FindCallback<TestObject>() {
+            @Override
+            public void done(List<TestObject> usr, ParseException e) {
+                if(e != null){
+                    //Erro
+                }else{
+                    for(TestObject objUser : usr){
+                        for (TestObject usuario : usuarios){
+                            if(objUser.compareTo(usuario) == 1){
+                                //objUser.setStatus(usuario.getStatus());
+                                if(usuario.getStatus())
+                                    objUser.deleteInBackground();
+                                //objUser.saveInBackground();
+                                Log.d("Entrou", String.valueOf(objUser.getStatus()));
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 
     private View.OnClickListener onClick = new View.OnClickListener() {
         @Override
@@ -120,6 +147,12 @@ public class ParseListActivity extends ListActivity {
                     //it = new Intent(getApplicationContext(), MainActivity.class);
                     finish();
                     Toast.makeText(getApplicationContext(), "Todos os usuarios foram aceitos", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.buttonRejeitar:
+                    rejeitarTodos();
+                    //it = new Intent(getApplicationContext(), MainActivity.class);
+                    finish();
+                    Toast.makeText(getApplicationContext(), "Todos os usuarios foram rejeitados", Toast.LENGTH_SHORT).show();
                     break;
             }
             if (it != null)
