@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class login extends ActionBarActivity {
 
     private EditText edtUsername;
     private EditText edtPassword;
-    private List<TestObject> usuariosAprovadosNome;
+    private List<ParseUser> usuariosAprovadosNome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +37,8 @@ public class login extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        usuariosAprovadosNome = new ArrayList<TestObject>();
-        aprovadosLista((ArrayList<TestObject>) usuariosAprovadosNome);
+        usuariosAprovadosNome = new ArrayList<ParseUser>();
+        aprovadosLista((ArrayList<ParseUser>) usuariosAprovadosNome);
 
         edtUsername = (EditText) findViewById(R.id.user);
         edtPassword = (EditText) findViewById(R.id.pwd);
@@ -61,17 +62,20 @@ public class login extends ActionBarActivity {
     }
 
     //deveria ser um id unico. Tipo Email,
-    private void aprovadosLista(final ArrayList<TestObject> adicionar){
+    private void aprovadosLista(final ArrayList<ParseUser> adicionar){
         //Log.d("Entrou","entrou");
-        ParseQuery<TestObject> query = new ParseQuery<TestObject>("TestObject");
-        query.findInBackground(new FindCallback<TestObject>() {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("status", true);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> list, ParseException e) {
+                if (e == null) {
+                    for (ParseUser objUser : list) {
+                        //Log.d("Entrou", objUser.getNome())
+                            adicionar.add(objUser);
+                    }
 
-            @Override
-            public void done(List<TestObject> list, ParseException e) {
-                for (TestObject objUser : list) {
-                    //Log.d("Entrou", objUser.getNome());
-                    if (objUser.getStatus())
-                        adicionar.add(objUser);
+                    } else {
+                    // Something went wrong.
                 }
             }
         });
@@ -80,9 +84,9 @@ public class login extends ActionBarActivity {
     //deveria ser um id unico. Tipo Email,
     private boolean estaAprovado(final String userName){
 
-        for (TestObject objUser : usuariosAprovadosNome) {
+        for (ParseUser objUser : usuariosAprovadosNome) {
 
-            if (objUser.getNome().equals(userName)){
+            if (objUser.getUsername().equals(userName)){
                 return true;
             }
         }

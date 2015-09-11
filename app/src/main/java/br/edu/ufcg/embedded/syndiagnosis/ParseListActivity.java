@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import br.edu.ufcg.embedded.syndiagnosis.Adapters.ParseListAdapter;
  * Created by digust10 on 18/08/2015.
  */
 public class ParseListActivity extends ListActivity {
-    List<TestObject> usuarios = new ArrayList<TestObject>();
+    List<ParseUser> usuarios = new ArrayList<ParseUser>();
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -32,32 +34,41 @@ public class ParseListActivity extends ListActivity {
 
         ((Button) findViewById(R.id.buttonAceitar)).setOnClickListener(onClick);
 
-        ParseQuery<TestObject> query = new ParseQuery<TestObject>("TestObject");
-        query.findInBackground(new FindCallback<TestObject>() {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.findInBackground(new FindCallback<ParseUser>() {
             @Override
-            public void done(List<TestObject> list, ParseException e) {
+            public void done(List<ParseUser> list, ParseException e) {
                 if(e != null){
                     //Erro
                 }else{
-                    for(TestObject objUser : list){
+                    for(ParseUser objUser : list){
                         //if(!objUser.getStatus()){ //o admin so pega os usuarios que ainda precisam de autorizacao
-                        TestObject newUser = new TestObject();
+                        ParseUser newUser = new ParseUser();
                         newUser.setEmail(objUser.getEmail());
-                        newUser.setNome(objUser.getNome());
-                        newUser.setStatus(objUser.getStatus());
+                        newUser.setUsername(objUser.getUsername());
+                        newUser.put("status",objUser.get("status"));
                         //usuarios.add(newUser);
                         //So quem esta requisitando acesso
-                        if(objUser.getStatus() == false){
+                        if(objUser.get("status") == false){
                             usuarios.add(newUser);
                         }
                         //}
 
                     }
                 }
-                ArrayAdapter<TestObject> adapter = new ParseListAdapter(ParseListActivity.this, R.layout.item_parse_list, usuarios);//simple_list_item_multiple_choice
+                ArrayAdapter<ParseUser> adapter = new ParseListAdapter(ParseListActivity.this, R.layout.item_parse_list, usuarios);//simple_list_item_multiple_choice
                 setListAdapter(adapter);
             }
         });
+    }
+
+    private int compareToUser(ParseUser testObject , ParseUser otherUser) {
+        if(testObject.getEmail().equals(otherUser.getEmail())){
+            if(testObject.getUsername().equals(otherUser.getUsername())){
+                return 1;
+            }
+        }
+        return -1;
     }
 
     private void aceitarTodos(){
@@ -68,19 +79,19 @@ public class ParseListActivity extends ListActivity {
             aceitaveis.saveInBackground();
         }*/
         Log.d("Entrou", "modificacoa");
-        ParseQuery<TestObject> query = new ParseQuery<TestObject>("TestObject");
-        query.findInBackground(new FindCallback<TestObject>() {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.findInBackground(new FindCallback<ParseUser>() {
             @Override
-            public void done(List<TestObject> usr, ParseException e) {
+            public void done(List<ParseUser> usr, ParseException e) {
                 if(e != null){
                     //Erro
                 }else{
-                    for(TestObject objUser : usr){
-                        for (TestObject usuario : usuarios){
-                            if(objUser.compareTo(usuario) == 1){
-                                objUser.setStatus(usuario.getStatus());
+                    for(ParseUser objUser : usr){
+                        for (ParseUser usuario : usuarios){
+                            if(compareToUser(usuario, objUser) == 1){
+                                objUser.put("status",usuario.getBoolean("status"));
                                 objUser.saveInBackground();
-                                Log.d("Entrou", String.valueOf(objUser.getStatus()));
+                                Log.d("Entrou", String.valueOf(objUser.getBoolean("status")));
                             }
                         }
                     }

@@ -8,6 +8,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.parse.ParseUser;
+
 import java.util.List;
 
 import br.edu.ufcg.embedded.syndiagnosis.R;
@@ -18,10 +20,10 @@ import br.edu.ufcg.embedded.syndiagnosis.TestObject;
  */
 public class ParseListAdapter extends ArrayAdapter {
 
-    List<TestObject> usuariosLista;
+    List<ParseUser> usuariosLista;
     Activity activity;
 
-    public ParseListAdapter(Activity activity, int idLayout, List<TestObject> list){
+    public ParseListAdapter(Activity activity, int idLayout, List<ParseUser> list){
         super(activity, idLayout, list);
         this.activity = activity;
         usuariosLista = list;
@@ -31,17 +33,17 @@ public class ParseListAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View usuarioView  = activity.getLayoutInflater().inflate(R.layout.item_parse_list, null);
 
-        final TestObject usuario = getItem(position);
+        final ParseUser usuario = getItem(position);
 
         final CheckBox cb = (CheckBox) usuarioView.findViewById(R.id.checkboxItemParse);
 
-        cb.setChecked(usuario.getStatus());
+        cb.setChecked(usuario.getBoolean("status"));
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(final CompoundButton buttonView,
                                          final boolean isChecked) {
                 cb.setChecked(isChecked);
-                usuario.setStatus(isChecked);
+                usuario.put("status",isChecked);
             }
 
         });
@@ -49,7 +51,7 @@ public class ParseListAdapter extends ArrayAdapter {
         TextView tvNome = (TextView) usuarioView.findViewById(R.id.nomeParseList);
         TextView tvEmail = (TextView) usuarioView.findViewById(R.id.emailParseList);
 
-        tvNome.setText(usuario.getNome());
+        tvNome.setText(usuario.getUsername());
         tvEmail.setText(usuario.getEmail());
 
 
@@ -69,7 +71,7 @@ public class ParseListAdapter extends ArrayAdapter {
      * @see android.widget.Adapter#getItem(int)
      */
     @Override
-    public final TestObject getItem(final int position) {
+    public final ParseUser getItem(final int position) {
         return usuariosLista.get(position);
     }
 

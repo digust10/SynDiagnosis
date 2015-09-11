@@ -57,20 +57,21 @@ public class RecuperacaoDeSenha extends AppCompatActivity {
                 public void done(ParseException e) {
                     if (e == null) {
 
-                        Toast.makeText(getApplicationContext(), "Senha Emviada com sucesso!", Toast.LENGTH_LONG)
+                        Toast.makeText(getApplicationContext(), "Senha Enviada com sucesso!", Toast.LENGTH_LONG)
                                 .show();
                         // An email was successfully sent with reset instructions.
                     } else {
                         // Something went wrong. Look at the ParseException to see what's up.
-                        Toast.makeText(getApplicationContext(), "Nao!", Toast.LENGTH_LONG)
+                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG)
                                 .show();
                     }
                 }
 
             });
+        }else {
+            Toast.makeText(getApplicationContext(), "Email Invalido ou nao cadastrado", Toast.LENGTH_LONG)
+                    .show();
         }
 
-        Toast.makeText(getApplicationContext(), "Email Invalido", Toast.LENGTH_LONG)
-                .show();
     }
 }

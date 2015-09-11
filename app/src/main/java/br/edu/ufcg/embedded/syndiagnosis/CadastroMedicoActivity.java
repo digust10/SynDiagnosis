@@ -3,13 +3,17 @@ package br.edu.ufcg.embedded.syndiagnosis;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+
+import java.text.ParseException;
 
 import br.edu.ufcg.embedded.syndiagnosis.DAO.medicosDAO;
 import br.edu.ufcg.embedded.syndiagnosis.Model.Medico;
@@ -47,9 +51,9 @@ public class CadastroMedicoActivity extends AppCompatActivity {
     }
 
 
-    public void Salvar(View view){
-        if (validaCadastroMedico(edtName.getText().toString(),edtCpf.getText().toString(),edtCrm.getText().toString(),
-                edtEmail.getText().toString(),edtPassword.getText().toString())) {
+    public void Salvar(View view) {
+        if (validaCadastroMedico(edtName.getText().toString(), edtCpf.getText().toString(), edtCrm.getText().toString(),
+                edtEmail.getText().toString(), edtPassword.getText().toString())) {
             // Injeta no objeto "objetoEmprestado" os dados informados pelo usuário
             medico.setName(edtName.getText().toString());
             medico.setCpf(edtCpf.getText().toString());
@@ -68,20 +72,43 @@ public class CadastroMedicoActivity extends AppCompatActivity {
             Intent it = null;
             //TODO: salvar dados no BD
             //testando o parse
-            ParseObject testObject = ParseObject.create("TestObject");
-            testObject.put("Nome", edtName.getText().toString());
-            testObject.put("Email", edtEmail.getText().toString());
-            testObject.put("Status", false); //o usuario nao esta autorizado por padrao
-            testObject.saveInBackground();
-            Toast.makeText(getApplicationContext(), "Requiscao enviada", Toast.LENGTH_SHORT).show();
-            finish();
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            currentUser.logOut();
+
+            ParseUser user = new ParseUser();
+            user.setUsername(medico.getName());
+            user.setPassword(medico.getPassword());
+            user.setEmail(medico.getEmail());
+
+            // other fields can be set just like with ParseObject
+            user.put("crm", medico.getCrm());
+            user.put("cpf", medico.getCpf());
+            user.put("status", false);
+
+            user.signUpInBackground(new SignUpCallback() {
+                @Override
+                public void done(com.parse.ParseException e) {
+                    if (e == null) {
+                        Toast.makeText(getApplicationContext(), "Requisição Enviada com sucesso!", Toast.LENGTH_LONG)
+                                .show();
+                        // Hooray! Let them use the app now.
+                    } else {
+                        // Sign up didn't succeed. Look at the ParseException
+                        // to figure out what went wrong
+                        Toast.makeText(getApplicationContext(), "Não foi possivel enviar seu cadastro", Toast.LENGTH_LONG)
+                                .show();
+                        Log.i("Erro",e.toString());
+                    }
+                }
+            });
+
         }
     }
 
-    private boolean validaCadastroMedico(String name, String cpf,String crm, String email, String password){
+    private boolean validaCadastroMedico(String name, String cpf, String crm, String email, String password) {
         boolean ok = false;
         if (validaNome(name) && !checaEntradaEmBranco(cpf) && !checaEntradaEmBranco(crm) && !checaEntradaEmBranco(email)
-                && !checaEntradaEmBranco(password)){
+                && !checaEntradaEmBranco(password)) {
 
             if (validaTamanhoSenha(password)) {
 
@@ -96,10 +123,10 @@ public class CadastroMedicoActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "CPF Invalido", Toast.LENGTH_SHORT).show();
                 }
-            }else{
+            } else {
                 Toast.makeText(getApplicationContext(), "Tamanho de senha Invalido, a senha deve ter de 6 a 12 caracteres", Toast.LENGTH_SHORT).show();
             }
-        }else {
+        } else {
             Toast.makeText(getApplicationContext(), "Preencha todos os campos, existe campos vazios!", Toast.LENGTH_SHORT).show();
         }
 
@@ -107,7 +134,7 @@ public class CadastroMedicoActivity extends AppCompatActivity {
         return ok;
     }
 
-    public void Cancel(View view){
+    public void Cancel(View view) {
         finish();
     }
 
